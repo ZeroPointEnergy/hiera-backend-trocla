@@ -1,24 +1,15 @@
 # Hiera::Backend::Trocla
 
-TODO: Write a gem description
+This is a simple hiera backend to retreive passwords from trocla.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'hiera-backend-trocla'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Simply install the gem and hiera will find it automatically
 
     $ gem install hiera-backend-trocla
 
 ## Usage
 
-TODO: Write usage instructions here
 
 ## Contributing
 

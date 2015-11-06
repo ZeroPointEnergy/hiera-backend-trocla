@@ -1,9 +1,9 @@
-require "hiera/backend/trocla/version"
+require 'hiera/backend/trocla/version'
 
-module Hiera
+class Hiera
   module Backend
-    module Trocla
-      # Your code goes here...
+    class Trocla
+
     end
   end
 end

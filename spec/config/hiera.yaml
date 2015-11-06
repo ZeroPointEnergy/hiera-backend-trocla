@@ -1,0 +1,10 @@
+:backends:
+    - 'trocla'
+    - 'yaml'
+:hierarchy:
+    - 'defaults'
+:yaml:
+    :datadir: 'spec/config/hieradata'
+:trocla:
+    :config: 'spec/config/troclarc.yaml'
+:logger: 'noop'

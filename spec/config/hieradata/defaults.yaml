@@ -1,0 +1,7 @@
+normal_var: "test"
+
+var_with_password: "%{hiera('trocla_lookup::plain::my_secret_password')}"
+var_with_password2: "%{hiera('trocla_lookup::plain::my_secret_password.example.com')}"
+
+var_with_invalid_format: "%{hiera('trocla_lookup::unexisting::my_secret_password')}"
+

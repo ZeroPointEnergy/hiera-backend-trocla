@@ -1,6 +1,6 @@
-module Hiera
+class Hiera
   module Backend
-    module Trocla
+    class Trocla
       VERSION = "0.0.1"
     end
   end

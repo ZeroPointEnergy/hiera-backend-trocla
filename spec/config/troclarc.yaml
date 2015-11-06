@@ -1,0 +1,3 @@
+adapter: :YAML
+adapter_options:
+    :file: 'spec/config/trocla_data.yaml'
