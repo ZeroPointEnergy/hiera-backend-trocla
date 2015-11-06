@@ -1,5 +1,7 @@
 # Hiera Backend for Trocla
 
+[![Build Status](https://travis-ci.org/ZeroPointEnergy/hiera-backend-trocla.svg)](https://travis-ci.org/ZeroPointEnergy/hiera-backend-trocla)
+
 This is a simple hiera backend to retreive passwords from trocla.
 
 The idea of this backend is to enable you to use secrets from trocla
