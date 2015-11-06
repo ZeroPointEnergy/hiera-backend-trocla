@@ -1,4 +1,4 @@
-# Hiera::Backend::Trocla
+# Hiera Backend for Trocla
 
 This is a simple hiera backend to retreive passwords from trocla.
 
@@ -19,7 +19,7 @@ everything else will just be ignored.
 The second part of the variable is used to describe the format, the last part is the variable
 to lookup in trocla.
 
-    torcla_lookup::plan::myvar
+    torcla_lookup::format::myvar
 
 Add the backend to your hiera.yaml to use it.
 
