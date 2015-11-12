@@ -40,7 +40,7 @@ The trocla hiera backend will resolve all the variables which start with "trocla
 The second part of the variable is used to describe the format, the last part is the variable
 to lookup in trocla.
 
-    torcla_lookup::<format>::<myvar>
+    torcla_lookup::format::myvar
 
 You can use the backend via interpolation tokens like this:
 
@@ -54,8 +54,8 @@ You can use the backend via interpolation tokens like this:
 ### trocla_hierarchy
 
 trocla_hierarchy will lookup the key in the hierarchy defined in your hiera configuration.
-It will simply prefix all the variables with 'hiera/<source>/<key>' where source is one of
-the strings defined in the hierarchy section.
+It will simply prefix all the variables with 'hiera/source/key' where source is one of
+the interpolated strings defined in the hierarchy section.
 
 It will try to find a password on every level in your hierarchy first. After that it will
 create a password on the first hierarchy level by default. You can overwrite the level it
@@ -77,10 +77,21 @@ same role will get the same password you can set the 'order_override' like this:
     trocla_options::my_special_key:
       order_override: "roles/%{::role}"
 
+The format to lookup a password this way is the same as with 'trocla_lookup':
+
+    trocla_hierarchy::format::myvar
+
+Here is how you would use that in hiera:
+
+    mysql::server::root_password: "%{hiera('trocla_hierarchy::plain::mysql_root')}"
+
 ### options hash
 
 Trocla takes a hash of options which provides information for the password creation. This
-options can be set directly in hiera globally for every format of for every key.
+options can be set directly in hiera globally or for every key. You can also specify options
+specifically for a password format. However, keep in mind that it will only use the options
+of the format which is used first to retrieve a password for a key, because thats when the
+password is generated.
 
     trocla_options:
       length: 16
