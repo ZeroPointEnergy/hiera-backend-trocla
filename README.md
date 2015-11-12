@@ -40,7 +40,7 @@ The trocla hiera backend will resolve all the variables which start with "trocla
 The second part of the variable is used to describe the format, the last part is the variable
 to lookup in trocla.
 
-    torcla_lookup::format::myvar
+    trocla_lookup::format::myvar
 
 You can use the backend via interpolation tokens like this:
 
