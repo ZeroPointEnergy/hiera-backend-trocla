@@ -1,7 +1,25 @@
-normal_var: "test"
+# fixtures for options tests
+trocla_options:
+  length: 16
+  mysql:
+    length: 32
 
+trocla_options::special_length:
+  plain:
+    length: 64
+
+# fixtures for trocla_lookup tests
+normal_var: "test"
 var_with_password: "%{hiera('trocla_lookup::plain::my_secret_password')}"
 var_with_password2: "%{hiera('trocla_lookup::plain::my_secret_password.example.com')}"
-
 var_with_invalid_format: "%{hiera('trocla_lookup::unexisting::my_secret_password')}"
 
+# fixtures for trocla_hiera tests
+trocla_options::not_node_specific:
+  order_override: 'defaults'
+
+trocla_options::same_role:
+  order_override: "role/%{::role}"
+
+trocla_options::different_role:
+  order_override: "role/%{::role}"

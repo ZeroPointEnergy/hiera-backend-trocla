@@ -2,6 +2,8 @@
     - 'trocla'
     - 'yaml'
 :hierarchy:
+    - "nodes/%{::clientcert}"
+    - "roles/%{::role}"
     - 'defaults'
 :yaml:
     :datadir: 'spec/config/hieradata'
