@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["zuber@puzzle.ch"]
   spec.description   = %q{This is a hiera backend for the trocla password storage tool}
   spec.summary       = %q{This is a hiera backend for the trocla password storage tool}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ZeroPointEnergy/hiera-backend-trocla"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
