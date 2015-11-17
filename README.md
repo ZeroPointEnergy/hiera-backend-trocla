@@ -1,6 +1,8 @@
 # Hiera Backend for Trocla
 
 [![Build Status](https://travis-ci.org/ZeroPointEnergy/hiera-backend-trocla.svg)](https://travis-ci.org/ZeroPointEnergy/hiera-backend-trocla)
+[![Code Climate](https://codeclimate.com/github/ZeroPointEnergy/hiera-backend-trocla/badges/gpa.svg)](https://codeclimate.com/github/ZeroPointEnergy/hiera-backend-trocla)
+[![Test Coverage](https://codeclimate.com/github/ZeroPointEnergy/hiera-backend-trocla/badges/coverage.svg)](https://codeclimate.com/github/ZeroPointEnergy/hiera-backend-trocla/coverage)
 
 This is a simple hiera backend to retrieve passwords from trocla.
 
