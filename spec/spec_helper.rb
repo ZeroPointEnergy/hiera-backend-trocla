@@ -1,10 +1,7 @@
-require 'simplecov'
-SimpleCov.start do
-  add_filter '/spec/'
-  add_filter '/.bundle/'
-  add_filter '/vendor/'
+if RUBY_VERSION >= '1.9.3'
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
 end
-
 
 require 'hiera/backend/trocla'
 
