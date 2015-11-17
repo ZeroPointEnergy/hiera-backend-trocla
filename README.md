@@ -7,6 +7,10 @@ This is a simple hiera backend to retrieve passwords from trocla.
 The idea of this backend is to enable you to use secrets from trocla
 directly from your hiera data via interpolation tokens.
 
+A lot of the ideas for the improvement of this backend came from the 
+[trocla hiera plugin](https://github.com/duritong/puppet-trocla/pull/15)
+from @michaelweiser.
+
 ## Installation
 
 Simply install the gem and hiera will find it automatically
