@@ -35,20 +35,22 @@ class Hiera
       # This is a simple lookup which will return a password for the key
       def trocla_lookup(trocla_key, format, scope, order_override)
         opts = options(trocla_key, format, scope, order_override)
-        @trocla.password(trocla_key, format, opts)
+        @trocla.password(opts.delete('trocla_key')||trocla_key, format, opts)
       end
 
       def trocla_hierarchy(trocla_key, format, scope, order_override)
-        get_password_from_hierarchy(trocla_key, format, scope, order_override) ||
-          set_password_in_hierarchy(trocla_key, format, scope, order_override)
+        opts = options(trocla_key, format, scope, order_override)
+        tk = opts.delete('trocla_key') || trocla_key
+        get_password_from_hierarchy(tk, format, opts, scope, order_override) ||
+          set_password_in_hierarchy(tk, format, opts, scope, order_override)
       end
 
       # Try to retrieve a password from a hierarchy
-      def get_password_from_hierarchy(trocla_key, format, scope, order_override)
+      def get_password_from_hierarchy(trocla_key, format, opts, scope, order_override)
         answer = nil
         Backend.datasources(scope, order_override) do |source|
           key = hierarchical_key(source, trocla_key)
-          answer = @trocla.get_password(key, format)
+          answer = @trocla.get_password(key, format, opts)
           break unless answer.nil?
         end
         return answer
@@ -56,8 +58,7 @@ class Hiera
 
       # Set the password in the hierarchy at the top level or whatever
       # level is specified in the options hash with 'order_override'
-      def set_password_in_hierarchy(trocla_key, format, scope, order_override)
-        opts = options(trocla_key, format, scope, order_override)
+      def set_password_in_hierarchy(trocla_key, format, opts, scope, order_override)
         answer = nil
         Backend.datasources(scope, opts['order_override']) do |source|
           key = hierarchical_key(source, trocla_key)

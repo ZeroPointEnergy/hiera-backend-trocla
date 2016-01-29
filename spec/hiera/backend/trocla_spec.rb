@@ -5,6 +5,7 @@ describe Hiera::Backend::Trocla do
 
   before :each do
     @hiera = Hiera.new(:config => "spec/config/hiera.yaml")
+    @trocla = Trocla.new(@hiera.config[:trocla][:config])
   end
 
   describe 'trocla_lookup' do
@@ -32,6 +33,20 @@ describe Hiera::Backend::Trocla do
     it 'will return nil if the format is not valid' do
       expect{@hiera.lookup('trocla_lookup::unexisting::my_secret_password', nil, nil)}.to raise_error StandardError
       expect{@hiera.lookup('var_with_invalid_format', nil, nil)}.to raise_error StandardError
+    end
+
+    it 'will be able to influence the trocla key' do
+      x509 = @hiera.lookup('var_with_x509',nil, nil)
+      expect(x509).to match(/BEGIN RSA PRIVATE KEY/)
+      expect(x509).to match(/BEGIN CERTIFICATE/)
+      x509_key = @hiera.lookup('var_with_x509_key',nil, nil)
+      expect(x509_key).to match(/BEGIN RSA PRIVATE KEY/)
+      expect(x509_key).not_to match(/BEGIN CERTIFICATE/)
+
+      # given that hiera trocla options point to the same
+      # trocla key, it must be the same key
+      expect(OpenSSL::PKey::RSA.new(x509).to_pem).to eql(
+        OpenSSL::PKey::RSA.new(x509_key).to_pem)
     end
   end
 
@@ -66,6 +81,21 @@ describe Hiera::Backend::Trocla do
       scope2 = {'::clientcert' => 'node02.example.com', '::role' => 'role2'}
       password2 = @hiera.lookup('trocla_hierarchy::plain::different_role', nil, scope2)
       expect(password1).not_to eq(password2)
+    end
+    it 'will be able to influence the trocla key' do
+      scope1 = {'::clientcert' => 'node01.example.com', '::role' => 'role1'}
+      scope2 = {'::clientcert' => 'node02.example.com', '::role' => 'role1'}
+      x509 = @hiera.lookup('hiera_var_with_x509',nil, scope1)
+      expect(x509).to match(/BEGIN RSA PRIVATE KEY/)
+      expect(x509).to match(/BEGIN CERTIFICATE/)
+      x509_key = @hiera.lookup('hiera_var_with_x509_key',nil, scope2)
+      expect(x509_key).to match(/BEGIN RSA PRIVATE KEY/)
+      expect(x509_key).not_to match(/BEGIN CERTIFICATE/)
+
+      # given that hiera trocla options point to the same
+      # trocla key, it must be the same key
+      expect(OpenSSL::PKey::RSA.new(x509).to_pem).to eql(
+        OpenSSL::PKey::RSA.new(x509_key).to_pem)
     end
   end
 

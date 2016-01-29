@@ -23,3 +23,29 @@ trocla_options::same_role:
 
 trocla_options::different_role:
   order_override: "role/%{::role}"
+
+var_with_x509: "%{hiera('trocla_lookup::x509::my_cert')}"
+trocla_options::my_cert:
+  x509:
+    CN: 'my-cert'
+var_with_x509_key: "%{hiera('trocla_lookup::x509::my_cert_only_key')}"
+trocla_options::my_cert_only_key:
+  x509:
+    CN: 'my-cert'
+    trocla_key: my_cert
+    render:
+      keyonly: true
+
+hiera_var_with_x509: "%{hiera('trocla_hierarchy::x509::hiera_my_cert')}"
+trocla_options::hiera_my_cert:
+  order_override: "role/%{::role}"
+  x509:
+    CN: 'my-hiera-cert'
+hiera_var_with_x509_key: "%{hiera('trocla_hierarchy::x509::hiera_my_cert_only_key')}"
+trocla_options::hiera_my_cert_only_key:
+  order_override: "role/%{::role}"
+  x509:
+    CN: 'my-hiera-cert'
+    trocla_key: hiera_my_cert
+    render:
+      keyonly: true
