@@ -1,1 +1,3 @@
-adapter: :Memory
+store_options:
+  adapter: :Memory
+
