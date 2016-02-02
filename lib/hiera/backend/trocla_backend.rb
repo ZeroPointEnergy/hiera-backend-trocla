@@ -75,13 +75,13 @@ class Hiera
       # returns global options for password generation
       def global_options(format, scope, order_override)
         g_options = Backend.lookup('trocla_options', {}, scope, order_override, :hash)
-        g_options.merge(g_options[format] || {})
+        Backend.parse_answer(g_options.merge(g_options[format] || {}), scope)
       end
 
       # returns per key options for password generation
       def key_options(trocla_key, format, scope, order_override)
         k_options = Backend.lookup('trocla_options::' + trocla_key, {}, scope, order_override, :hash)
-        k_options.merge(k_options[format] || {})
+        Backend.parse_answer(k_options.merge(k_options[format] || {}), scope)
       end
 
       # retrieve options hash and merge the format specific settings into the defaults

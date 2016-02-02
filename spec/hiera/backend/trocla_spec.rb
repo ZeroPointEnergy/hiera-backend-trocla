@@ -115,6 +115,10 @@ describe Hiera::Backend::Trocla do
       password = @hiera.lookup('trocla_lookup::plain::special_length', nil, nil)
       expect(password.length).to eq(64)
     end
+    it 'will create a password with the length defined for the key, derived from another option' do
+      password2 = @hiera.lookup('trocla_lookup::plain::special_length2', nil, nil)
+      expect(password2.length).to eq(128)
+    end
   end
 
 end

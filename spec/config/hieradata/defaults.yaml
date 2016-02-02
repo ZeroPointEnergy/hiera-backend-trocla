@@ -8,6 +8,10 @@ trocla_options::special_length:
   plain:
     length: 64
 
+very_long: 128
+trocla_options::special_length2:
+  plain:
+    length: "%{hiera('very_long')}"
 # fixtures for trocla_lookup tests
 normal_var: "test"
 var_with_password: "%{hiera('trocla_lookup::plain::my_secret_password')}"
