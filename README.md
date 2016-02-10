@@ -95,9 +95,9 @@ Here is how you would use that in hiera:
 
 Trocla takes a hash of options which provides information for the password creation. This
 options can be set directly in hiera globally or for every key. You can also specify options
-specifically for a password format. However, keep in mind that it will only use the options
-of the format which is used first to retrieve a password for a key, because thats when the
-password is generated.
+specifically for a password format. However, keep in mind that trocla will respect most of
+the options only on the initial/first lookup, when the password is created. As most of the
+options only apply for creating a password.
 
     trocla_options:
       length: 16
@@ -112,6 +112,29 @@ password is generated.
 
 Some formats may require options to be set for creating passwords, like the
 postgresql format. Check the trocla documentation for available options.
+
+Through the options mechanism it is also possible to change the lookup key used for trocla.
+This is especially interesting, if you want to pass 2 different options for the same key,
+e.g. the render option. An example for that is to have trocla use the same key for 2 different
+lookups, so that with the x509 format, once a certificate and once a key is returned.
+
+
+    var_with_x509_cert: "%{hiera('trocla_lookup::x509::my_cert')}"
+    trocla_options::my_cert:
+      x509:
+        CN: 'my-cert'
+        render:
+          certonly: true
+    var_with_x509_key: "%{hiera('trocla_lookup::x509::my_cert_only_key')}"
+    trocla_options::my_cert_only_key:
+      x509:
+        CN: 'my-cert'
+        trocla_key: my_cert
+        render:
+          keyonly: true
+
+This will lookup one trocla key: my_cert, but with different rendering options, so that
+once we only get the certificat, while on the second lookup we get the private key.
 
 ## Contributing
 

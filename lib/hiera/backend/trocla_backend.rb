@@ -35,20 +35,22 @@ class Hiera
       # This is a simple lookup which will return a password for the key
       def trocla_lookup(trocla_key, format, scope, order_override)
         opts = options(trocla_key, format, scope, order_override)
-        @trocla.password(trocla_key, format, opts)
+        @trocla.password(opts.delete('trocla_key')||trocla_key, format, opts)
       end
 
       def trocla_hierarchy(trocla_key, format, scope, order_override)
-        get_password_from_hierarchy(trocla_key, format, scope, order_override) ||
-          set_password_in_hierarchy(trocla_key, format, scope, order_override)
+        opts = options(trocla_key, format, scope, order_override)
+        tk = opts.delete('trocla_key') || trocla_key
+        get_password_from_hierarchy(tk, format, opts, scope, order_override) ||
+          set_password_in_hierarchy(tk, format, opts, scope, order_override)
       end
 
       # Try to retrieve a password from a hierarchy
-      def get_password_from_hierarchy(trocla_key, format, scope, order_override)
+      def get_password_from_hierarchy(trocla_key, format, opts, scope, order_override)
         answer = nil
         Backend.datasources(scope, order_override) do |source|
           key = hierarchical_key(source, trocla_key)
-          answer = @trocla.get_password(key, format)
+          answer = @trocla.get_password(key, format, opts)
           break unless answer.nil?
         end
         return answer
@@ -56,8 +58,7 @@ class Hiera
 
       # Set the password in the hierarchy at the top level or whatever
       # level is specified in the options hash with 'order_override'
-      def set_password_in_hierarchy(trocla_key, format, scope, order_override)
-        opts = options(trocla_key, format, scope, order_override)
+      def set_password_in_hierarchy(trocla_key, format, opts, scope, order_override)
         answer = nil
         Backend.datasources(scope, opts['order_override']) do |source|
           key = hierarchical_key(source, trocla_key)
@@ -71,23 +72,23 @@ class Hiera
         "hiera/#{source}/#{trocla_key}"
       end
 
-      # returns global options for password generation
-      def global_options(format, scope, order_override)
-        g_options = Backend.lookup('trocla_options', {}, scope, order_override, :hash)
-        g_options.merge(g_options[format] || {})
-      end
-
-      # returns per key options for password generation
-      def key_options(trocla_key, format, scope, order_override)
-        k_options = Backend.lookup('trocla_options::' + trocla_key, {}, scope, order_override, :hash)
-        k_options.merge(k_options[format] || {})
-      end
-
       # retrieve options hash and merge the format specific settings into the defaults
       def options(trocla_key, format, scope, order_override)
         g_options = global_options(format, scope, order_override)
         k_options = key_options(trocla_key, format, scope, order_override)
         g_options.merge(k_options)
+      end
+
+      # returns global options for password generation
+      def global_options(format, scope, order_override)
+        g_options = Backend.lookup('trocla_options', {}, scope, order_override, :hash)
+        Backend.parse_answer(g_options.merge(g_options[format] || {}), scope)
+      end
+
+      # returns per key options for password generation
+      def key_options(trocla_key, format, scope, order_override)
+        k_options = Backend.lookup('trocla_options::' + trocla_key, {}, scope, order_override, :hash)
+        Backend.parse_answer(k_options.merge(k_options[format] || {}), scope)
       end
 
     end
