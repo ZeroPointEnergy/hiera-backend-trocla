@@ -1,3 +1,6 @@
+This project has been superseded by the [puppet-trocla](https://github.com/duritong/puppet-trocla)
+ module.
+ 
 # Hiera Backend for Trocla
 
 [![Build Status](https://travis-ci.org/ZeroPointEnergy/hiera-backend-trocla.svg)](https://travis-ci.org/ZeroPointEnergy/hiera-backend-trocla)
