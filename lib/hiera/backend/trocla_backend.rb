@@ -14,6 +14,7 @@ class Hiera
           require 'trocla'
         end
 
+        Config.load_backends
         @trocla_conf = Config[:trocla] && Config[:trocla][:config]
         @trocla = ::Trocla.new(@trocla_conf)
       end
